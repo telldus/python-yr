@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 import yr.libyr
 print('/home/pm/.local/lib/python3.4/site-packages/yr/libyr.py') # ~> is wrong!

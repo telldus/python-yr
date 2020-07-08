@@ -1,13 +1,14 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 import logging
 import os.path
 import json  # Language
 import tempfile  # Cache
 import datetime  # Cache
-import urllib.request  # Connect
-import urllib.parse  # Location
+import requests
+import urllib
 import xmltodict
+from io import open
 
 log = logging.getLogger(__name__)
 
@@ -75,7 +76,7 @@ class Location(YrObject):
         return '{base_url}{place}/{location_name}/{forecast_link}.{extension}'.format(
             base_url=self.base_url,
             place=self.language.dictionary['place'],
-            location_name=urllib.parse.quote(self.location_name),
+            location_name=urllib.quote(self.location_name),
             forecast_link=self.forecast_link,
             extension=self.extension,
         )
@@ -150,10 +151,10 @@ class Connect(YrObject):
             cache = Cache(self.location)
             if not cache.exists() or not cache.is_fresh():
                 log.info('read online: {}'.format(self.location.url))
-                response = urllib.request.urlopen(self.location.url)
-                if response.status != 200 and response.status != 203:
+                response = requests.get(self.location.url)
+                if response.status_code != 200 and response.status_code != 203:
                     raise
-                weatherdata = response.read().decode(self.encoding)
+                weatherdata = response.text
                 cache.dump(weatherdata)
             else:
                 weatherdata = cache.load()
