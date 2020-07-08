@@ -54,7 +54,7 @@ class Language(YrObject):
 
 class Location(YrObject):
 
-    base_url = 'http://www.yr.no/'
+    base_url = 'https://api.met.no/'
     default_forecast_link = 'forecast'
     forecast_links = [default_forecast_link, 'forecast_hour_by_hour']
     extension = 'xml'
@@ -91,7 +91,7 @@ class API_Locationforecast(YrObject):
 
     """Class to use the API of api.met.no"""
 
-    base_url = 'https://api.met.no/weatherapi/locationforecast/1.9/?'
+    base_url = 'https://api.met.no/weatherapi/locationforecast/2.0/classic/?'
     forecast_link = 'locationforecast'
 
     def __init__(self, lat, lon, msl=0, language=False):
@@ -102,7 +102,7 @@ class API_Locationforecast(YrObject):
         :param language: a Language object
         """
         self.coordinates = dict(lat=lat, lon=lon, msl=msl)
-        self.location_name = 'lat={lat};lon={lon};msl={msl}'.format(**self.coordinates)
+        self.location_name = 'lat={lat};lon={lon};altitude={msl}'.format(**self.coordinates)
         # self.language = language if isinstance(language, Language) else Language()
         self.url = self.get_url()
         self.hash = self.get_hash()
