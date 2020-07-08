@@ -151,7 +151,7 @@ class Connect(YrObject):
             if not cache.exists() or not cache.is_fresh():
                 log.info('read online: {}'.format(self.location.url))
                 response = urllib.request.urlopen(self.location.url)
-                if response.status != 200:
+                if response.status != 200 and response.status != 203:
                     raise
                 weatherdata = response.read().decode(self.encoding)
                 cache.dump(weatherdata)
