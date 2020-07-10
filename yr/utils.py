@@ -5,6 +5,7 @@ import os.path
 import json  # Language
 import tempfile  # Cache
 import datetime  # Cache
+import pkgutil  # Language
 import requests
 import urllib
 import xmltodict
@@ -35,7 +36,6 @@ class Language(YrObject):
     def __init__(self, language_name=default_language_name):
         self.language_name = language_name
         self.filename = os.path.join(
-            self.script_directory,
             self.directory,
             '{language_name}.{extension}'.format(
                 language_name=self.language_name,
@@ -46,9 +46,8 @@ class Language(YrObject):
 
     def get_dictionary(self):
         try:
-            log.info('read language dictionary: {}'.format(self.filename))
-            with open(self.filename, mode='r', encoding=self.encoding) as f:
-                return json.load(f)
+            lang = pkgutil.get_data(__name__, self.filename).decode()
+            return json.loads(lang)
         except Exception as e:
             raise YrException(e)
 
