@@ -35,7 +35,7 @@ class Yr:
             yield self.py2result(time, as_json)
 
     def now(self, as_json=False):
-        return next(self.forecast(as_json))
+        return self.forecast(as_json).next()
 
     def __init__(
             self,
