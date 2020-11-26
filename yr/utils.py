@@ -152,7 +152,7 @@ class Connect(YrObject):
                 log.info('read online: {}'.format(self.location.url))
                 response = requests.get(self.location.url)
                 if response.status_code != 200 and response.status_code != 203:
-                    raise
+                    raise Exception("Unexpected response code")
                 weatherdata = response.text
                 cache.dump(weatherdata)
             else:
