@@ -150,7 +150,9 @@ class Connect(YrObject):
             cache = Cache(self.location)
             if not cache.exists() or not cache.is_fresh():
                 log.info('read online: {}'.format(self.location.url))
-                response = requests.get(self.location.url)
+                sitename = "https://github.com/telldus/python-yr"
+                headers = {'User-Agent': sitename}
+                response = requests.get(self.location.url, headers=headers)
                 if response.status_code != 200 and response.status_code != 203:
                     raise Exception("Unexpected response code")
                 weatherdata = response.text
